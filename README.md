@@ -1,40 +1,37 @@
 # Ubuntu 编译器配置脚本
 
-This repository provides a helper script to install and configure multiple
-GCC/G++ toolchains on Ubuntu.
+本仓库提供了一个辅助脚本，用于在 Ubuntu 上安装并配置多个 GCC/G++ 工具链。
 
-## Included Script
+## 包含脚本
 
-- `config.sh`: Installs GCC/G++ versions 9 and 11, plus several cross-compiler
-  targets, then registers them with `update-alternatives`.
+- `config.sh`：安装 GCC/G++ 9 和 11 版本，以及多个交叉编译目标，并通过 `update-alternatives` 进行注册。
 
-## Toolchains Installed
+## 安装的工具链
 
-- Native: `gcc-9`, `g++-9`, `gcc-11`, `g++-11`
-- Cross targets:
+- 本地编译器：`gcc-9`、`g++-9`、`gcc-11`、`g++-11`
+- 交叉编译目标：
   - `i686-linux-gnu`
   - `aarch64-linux-gnu`
   - `arm-linux-gnueabi`
   - `arm-linux-gnueabihf`
 
-## Usage
+## 使用方法
 
 ```bash
 chmod +x config.sh
 ./config.sh
 ```
 
-The script prompts before each compiler version installation and waits up to
-60 seconds for input.
+脚本会在安装每个编译器版本前进行提示，并最多等待 60 秒输入。
 
-## Requirements
+## 环境要求
 
-- Ubuntu or another apt-based distribution
-- `sudo` privileges
+- Ubuntu 或其他基于 apt 的发行版
+- 具备 `sudo` 权限
 
-## Selecting Default Compiler
+## 选择默认编译器
 
-After installation, you can switch compiler versions with:
+安装完成后，可通过以下命令切换默认编译器版本：
 
 ```bash
 sudo update-alternatives --config gcc
