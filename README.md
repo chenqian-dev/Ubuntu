@@ -1,4 +1,4 @@
-# Ubuntu Compiler Setup Script
+# Ubuntu 编译器配置脚本
 
 This repository provides a helper script to install and configure multiple
 GCC/G++ toolchains on Ubuntu.
