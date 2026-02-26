@@ -3,7 +3,7 @@
 sudo apt update
 
 # intall compiler
-for i in 9 11;
+for i in 9 11 12;
 do
 echo "######################### install gcc & gcc $i #########################"
 
