@@ -1,34 +1,31 @@
-# Ubuntu GCC/G++ 工具链一键配置
+# One-Command Ubuntu GCC/G++ Toolchain Setup
 
-## 1) 仓库用途
-本仓库提供 `config.sh`，用于在 Ubuntu（或其他基于 `apt` 的发行版）一次性安装并注册多版本本地 GCC/G++ 与常用交叉工具链，并通过 `update-alternatives` 统一管理默认版本。
+## Repository Purpose
+This repository provides `config.sh` to install and register multiple local GCC/G++ versions plus common cross-compilers on Ubuntu or other `apt`-based distributions. It uses `update-alternatives` to keep default compiler selections consistent and easy to switch.
 
-## 2) 安装范围
-`config.sh` 安装并注册的版本为 `9/10/11/12`。
-- 本地命令：`gcc`、`g++`、`gcov`
-- 交叉目标：`i686-linux-gnu`、`aarch64-linux-gnu`、`arm-linux-gnueabi`、`arm-linux-gnueabihf`（对应 `gcc/g++/gcov` 一并注册）
-
-前置条件：系统支持 `apt`、具备 `sudo` 权限、网络可访问软件源。
-
-## 3) 快速使用
+## Quick Start
 ```bash
 chmod +x config.sh
 ./config.sh
 ```
-脚本会在每个版本（9、10、11、12）安装前暂停一次等待输入，默认 60 秒超时后继续。
+Before installing each version (`9`, `10`, `11`, `12`), the script pauses for confirmation and automatically continues after 60 seconds.
 
-## 4) 常用切换命令
+## Installed Scope
+Installed and registered versions: `9/10/11/12`.
+- Local tools: `gcc`, `g++`, `gcov`
+- Cross targets: `i686-linux-gnu`, `aarch64-linux-gnu`, `arm-linux-gnueabi`, `arm-linux-gnueabihf` (each includes `gcc/g++/gcov`)
+Prerequisites: `apt` package manager, `sudo` privileges, and reachable package mirrors.
+
+## Switch Commands
 ```bash
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 sudo update-alternatives --config aarch64-linux-gnu-gcc
 ```
 
-## 5) 最小验证
+## Verification
 ```bash
 gcc --version
 aarch64-linux-gnu-gcc --version
 update-alternatives --display gcc
-printf 'int main(void){return 0;}\n' | gcc -x c - -o /tmp/hello.local && /tmp/hello.local
-printf 'int main(void){return 0;}\n' | aarch64-linux-gnu-gcc -x c -c - -o /tmp/hello.aarch64.o
 ```
