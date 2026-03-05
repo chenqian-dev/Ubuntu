@@ -1,36 +1,30 @@
-# Ubuntu GCC/G++ 工具链一键配置
+# One-Command Ubuntu GCC/G++ Toolchain Setup
 
-`config.sh` 用于在 Ubuntu（apt 环境）批量安装并注册 GCC/G++ 与常见交叉工具链，统一通过 `update-alternatives` 管理切换。
+## Repository Purpose
+This repository provides `config.sh` for Ubuntu or other `apt`-based systems to install local GCC/G++ versions and common cross toolchains. It uses `update-alternatives` to keep compiler selection consistent and easy to switch.
 
-## 安装内容
-
-- 本地编译器版本：`gcc/g++ 9/10/11/12`
-- 交叉目标：`i686-linux-gnu`、`aarch64-linux-gnu`、`arm-linux-gnueabi`、`arm-linux-gnueabihf`（均按 9/10/11/12 安装）
-- alternatives 注册项：
-  - 本地：`gcc`、`g++`、`gcov`
-  - 交叉：`<target>-gcc`、`<target>-g++`、`<target>-gcov`
-
-## 执行步骤
-
-- 前提：有 `sudo` 权限，`apt` 软件源可用
-
+## Quick Start
 ```bash
 chmod +x config.sh
 ./config.sh
 ```
+Before installing each version (`9`, `10`, `11`, `12`), the script waits for keyboard input and continues automatically after a 60-second timeout.
 
-脚本会在每个版本（9/10/11/12）安装前等待一次键盘输入，`60` 秒超时后继续。
+## Installed Scope
+- Local compiler versions: `gcc/g++ 9/10/11/12`
+- Cross targets (installed for `9/10/11/12`): `i686-linux-gnu`, `aarch64-linux-gnu`, `arm-linux-gnueabi`, `arm-linux-gnueabihf`
+- Registered local alternatives: `gcc`, `g++`, `gcov`
+- Registered cross alternatives: `<target>-gcc`, `<target>-g++`, `<target>-gcov`
+- Prerequisites: `sudo` privileges and reachable `apt` package sources
 
-## 常用切换
-
+## Switch Commands
 ```bash
 sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 sudo update-alternatives --config aarch64-linux-gnu-gcc
 ```
 
-## 最小验证
-
+## Verification
 ```bash
 gcc --version
 aarch64-linux-gnu-gcc --version
@@ -42,6 +36,7 @@ cat > hello.c <<'EOF'
 #include <stdio.h>
 int main(void) { puts("hello"); return 0; }
 EOF
+
 gcc hello.c -o hello && ./hello
 aarch64-linux-gnu-gcc -c hello.c -o hello.aarch64.o
 ```
