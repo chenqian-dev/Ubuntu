@@ -1,7 +1,7 @@
 # One-Command Ubuntu GCC/G++ Toolchain Setup
 
 ## Repository Purpose
-This repository provides `config.sh` for Ubuntu and other `apt`-based systems. The script installs several local GCC/G++ versions, installs a fixed set of cross toolchains, and registers them with `update-alternatives` so the active compiler can be switched consistently.
+This repository provides `config.sh` for Ubuntu and other `apt`-based systems. The script installs GCC/G++ versions `9`, `10`, `11`, and `12`, installs a fixed set of cross toolchains for each version, and registers them with `update-alternatives` so the active compiler can be switched consistently.
 
 ## Requirements
 - Ubuntu or another distribution with `apt`
@@ -38,16 +38,12 @@ The script installs the following target prefixes for each version `9`, `10`, `1
 
 ## Registered Alternatives
 
-### Local commands
-- `gcc`
-- `g++`
-- `gcov`
+The script registers the following `update-alternatives` entries:
 
-### Cross commands
-- `i686-linux-gnu-gcc`, `i686-linux-gnu-g++`, `i686-linux-gnu-gcov`
-- `aarch64-linux-gnu-gcc`, `aarch64-linux-gnu-g++`, `aarch64-linux-gnu-gcov`
-- `arm-linux-gnueabi-gcc`, `arm-linux-gnueabi-g++`, `arm-linux-gnueabi-gcov`
-- `arm-linux-gnueabihf-gcc`, `arm-linux-gnueabihf-g++`, `arm-linux-gnueabihf-gcov`
+- Native primary command: `gcc`
+- Native slave commands: `g++`, `gcov`
+- Cross primary commands: `i686-linux-gnu-gcc`, `aarch64-linux-gnu-gcc`, `arm-linux-gnueabi-gcc`, `arm-linux-gnueabihf-gcc`
+- Cross slave commands for each target: `<target>-g++`, `<target>-gcov`
 
 ## Switch Commands
 Use `update-alternatives --config` to select the active compiler version:
@@ -82,9 +78,11 @@ EOF
 
 gcc hello.c -o hello && ./hello
 aarch64-linux-gnu-gcc -c hello.c -o hello.aarch64.o
+file hello.aarch64.o
 ```
 
 ## Notes
 - The script only supports systems where the package names used in `config.sh` are available through `apt`.
+- Some repositories may not provide every `gcc-<version>-<target>` package referenced by the script.
 - If any `apt install` or `update-alternatives --install` command fails, the script exits immediately with status `1`.
-- Cross toolchains are best validated by compiling objects or binaries; running the resulting target binaries usually requires a matching runtime environment.
+- Cross toolchains are best validated by compiling objects or binaries; running the resulting target binaries usually requires a matching runtime environment or emulator.
